@@ -1,0 +1,38 @@
+package org.example.crud_prj_ex.servlet;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+import org.example.crud_prj_ex.dao.OrderDAO;
+import org.example.crud_prj_ex.model.Order;
+
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.List;
+
+@WebServlet("/orders")
+public class OrderServlet extends HttpServlet {
+    private OrderDAO orderDAO = new OrderDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        HttpSession session = req.getSession();
+        String userId = (String) session.getAttribute("userId");
+
+        if (userId == null) {
+            userId = "demo-user-id";
+            session.setAttribute("userId", userId);
+        }
+
+        try {
+            List<Order> orders = orderDAO.getByUserId(userId);
+            req.setAttribute("orders", orders);
+            req.getRequestDispatcher("/order/list.jsp").forward(req, resp);
+        } catch (SQLException e) {
+            throw new ServletException(e);
+        }
+    }
+}
