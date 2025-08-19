@@ -11,7 +11,7 @@ import org.example.crud_prj_ex.model.Product;
 import java.io.IOException;
 import java.sql.SQLException;
 
-@WebServlet("/products/detail")
+@WebServlet("/product/detail")
 public class ProductDetailServlet extends HttpServlet {
     private ProductDAO dao = new ProductDAO();
 

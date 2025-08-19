@@ -22,6 +22,22 @@ public class OrderUpdateStatusServlet extends HttpServlet {
             resp.sendRedirect(req.getContextPath() + "/orders");
             return;
         }
+
+        // Validate status to prevent SQL truncation error
+        String[] validStatuses = {"pending", "success", "cancel", "error"};
+        boolean isValidStatus = false;
+        for (String validStatus : validStatuses) {
+            if (validStatus.equals(status)) {
+                isValidStatus = true;
+                break;
+            }
+        }
+
+        if (!isValidStatus) {
+            resp.sendRedirect(req.getContextPath() + "/orders");
+            return;
+        }
+
         try {
             int orderId = Integer.parseInt(orderIdParam);
             orderDAO.updateOrderStatus(orderId, status);
@@ -31,4 +47,3 @@ public class OrderUpdateStatusServlet extends HttpServlet {
         }
     }
 }
-

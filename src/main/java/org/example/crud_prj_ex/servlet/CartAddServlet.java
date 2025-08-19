@@ -10,44 +10,79 @@ import org.example.crud_prj_ex.dao.CartDAO;
 import org.example.crud_prj_ex.model.User;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 @WebServlet("/cart/add")
 public class CartAddServlet extends HttpServlet {
     private CartDAO cartDAO = new CartDAO();
-    private UserService userService = new UserService();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("userId");
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("=== CartAddServlet.doPost() START ===");
 
-        // If user is not logged in, redirect to login page
-        if (userId == null) {
-            String currentUrl = req.getRequestURL().toString();
-            if (req.getQueryString() != null) {
-                currentUrl += "?" + req.getQueryString();
-            }
-            resp.sendRedirect(req.getContextPath() + "/login?redirect=" +
-                    java.net.URLEncoder.encode(currentUrl, "UTF-8"));
-            return;
-        }
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
 
-        // Verify user exists in the system (using email as userId)
-        User user = userService.getUserById(userId);
-        if (user == null) {
-            resp.sendRedirect(req.getContextPath() + "/login");
-            return;
-        }
+        PrintWriter out = resp.getWriter();
 
         try {
-            int productId = Integer.parseInt(req.getParameter("productId"));
-            int quantity = Integer.parseInt(req.getParameter("quantity"));
+            HttpSession session = req.getSession(false);
+            if (session == null) {
+                System.out.println("No session found");
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.print("{\"success\": false, \"message\": \"Vui lòng đăng nhập\"}");
+                return;
+            }
 
-            cartDAO.addToCart(userId, productId, quantity);
-            resp.sendRedirect(req.getContextPath() + "/cart");
+            User user = (User) session.getAttribute("user");
+            if (user == null) {
+                System.out.println("No user in session");
+                resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                out.print("{\"success\": false, \"message\": \"Vui lòng đăng nhập\"}");
+                return;
+            }
+
+            String productIdStr = req.getParameter("productId");
+            String quantityStr = req.getParameter("quantity");
+
+            System.out.println("Adding to cart - productId: " + productIdStr + ", quantity: " + quantityStr + ", userId: " + user.getUserId());
+
+            if (productIdStr == null || quantityStr == null) {
+                out.print("{\"success\": false, \"message\": \"Thiếu thông tin sản phẩm\"}");
+                return;
+            }
+
+            int productId = Integer.parseInt(productIdStr);
+            int quantity = Integer.parseInt(quantityStr);
+
+            if (quantity <= 0) {
+                out.print("{\"success\": false, \"message\": \"Số lượng phải lớn hơn 0\"}");
+                return;
+            }
+
+            cartDAO.addToCart(user.getUserId(), productId, quantity);
+            System.out.println("Successfully added to cart");
+
+            out.print("{\"success\": true, \"message\": \"Đã thêm sản phẩm vào giỏ hàng\"}");
+
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid number format: " + e.getMessage());
+            out.print("{\"success\": false, \"message\": \"Thông tin sản phẩm không hợp lệ\"}");
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            System.err.println("SQLException in CartAddServlet: " + e.getMessage());
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"success\": false, \"message\": \"Lỗi cơ sở dữ liệu\"}");
+        } catch (Exception e) {
+            System.err.println("Unexpected error in CartAddServlet: " + e.getMessage());
+            e.printStackTrace();
+            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            out.print("{\"success\": false, \"message\": \"Có lỗi xảy ra\"}");
+        } finally {
+            out.flush();
         }
+
+        System.out.println("=== CartAddServlet.doPost() END ===");
     }
 }

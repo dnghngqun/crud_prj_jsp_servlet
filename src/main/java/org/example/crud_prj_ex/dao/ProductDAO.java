@@ -22,17 +22,34 @@ public class ProductDAO {
     }
 
     public List<Product> getAll() throws SQLException {
+        System.out.println("=== ProductDAO.getAll() START ===");
         String sql = "SELECT p.*, c.name as category_name FROM products p " +
                 "LEFT JOIN categories c ON p.category_id = c.category_id " +
                 "WHERE p.deleted_at IS NULL";
+        System.out.println("SQL Query: " + sql);
+
         List<Product> list = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
+
+            System.out.println("Database connection successful");
+            int count = 0;
             while (rs.next()) {
-                list.add(mapResultSetToProduct(rs));
+                count++;
+                Product product = mapResultSetToProduct(rs);
+                list.add(product);
+                if (count <= 3) { // Log first 3 products
+                    System.out.println("Product " + count + ": " + product.getName() + " (ID: " + product.getId() + ")");
+                }
             }
+            System.out.println("Total products found in database: " + count);
+        } catch (SQLException e) {
+            System.err.println("SQLException in ProductDAO.getAll(): " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
+        System.out.println("=== ProductDAO.getAll() END - Returning " + list.size() + " products ===");
         return list;
     }
 
@@ -127,6 +144,23 @@ public class ProductDAO {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, categoryId);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                list.add(mapResultSetToProduct(rs));
+            }
+        }
+        return list;
+    }
+
+    public List<Product> searchByName(String searchQuery) throws SQLException {
+        String sql = "SELECT p.*, c.name as category_name FROM products p " +
+                "LEFT JOIN categories c ON p.category_id = c.category_id " +
+                "WHERE p.name LIKE ? AND p.deleted_at IS NULL";
+
+        List<Product> list = new ArrayList<>();
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + searchQuery + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 list.add(mapResultSetToProduct(rs));

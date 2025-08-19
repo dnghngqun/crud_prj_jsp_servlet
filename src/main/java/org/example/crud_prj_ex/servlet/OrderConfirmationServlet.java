@@ -25,8 +25,21 @@ public class OrderConfirmationServlet extends HttpServlet {
             return;
         }
 
+        HttpSession session = req.getSession();
+        User user = (User) session.getAttribute("user");
+
         try {
             Order order = orderDAO.getById(Integer.parseInt(orderId));
+            if (order != null && user != null) {
+                // Set the email if it's not already set
+                if (order.getEmail() == null || order.getEmail().isEmpty()) {
+                    order.setEmail(user.getEmail());
+                }
+                // Set payment method if not set
+                if (order.getPaymentMethod() == null || order.getPaymentMethod().isEmpty()) {
+                    order.setPaymentMethod("Thanh toán khi nhận hàng");
+                }
+            }
             req.setAttribute("order", order);
             req.getRequestDispatcher("/order/confirmation.jsp").forward(req, resp);
         } catch (SQLException e) {

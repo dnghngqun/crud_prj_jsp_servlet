@@ -34,6 +34,7 @@
             </tr>
             </thead>
             <tbody>
+            <jsp:useBean id="list" scope="request" type="java.util.List"/>
             <c:forEach items="${list}" var="p">
                 <tr>
                     <td>${p.id}</td>

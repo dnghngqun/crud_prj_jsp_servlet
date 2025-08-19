@@ -156,13 +156,35 @@ public class CartDAO {
                 BigDecimal discount = item.getDiscount() != null ? item.getDiscount() : BigDecimal.ZERO;
                 BigDecimal finalPrice = price.subtract(discount);
                 BigDecimal total = finalPrice.multiply(new BigDecimal(item.getQuantity()));
-                item.setPrice(total);
+                item.setTotalPrice(total);
 
                 cartItems.add(item);
             }
         }
 
         return cartItems;
+    }
+
+    public int getCartItemCount(String userId) throws SQLException {
+        System.out.println("=== CartDAO.getCartItemCount() for userId: " + userId + " ===");
+        String sql = "SELECT SUM(quantity) FROM cart WHERE user_id = ?";
+        
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, userId);
+            ResultSet rs = stmt.executeQuery();
+            
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                System.out.println("Cart item count from database: " + count);
+                return count;
+            }
+        } catch (SQLException e) {
+            System.err.println("SQLException in getCartItemCount: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+        return 0;
     }
 
 }

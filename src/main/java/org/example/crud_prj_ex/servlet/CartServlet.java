@@ -8,8 +8,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.crud_prj_ex.dao.CartDAO;
 import org.example.crud_prj_ex.model.CartItem;
+import org.example.crud_prj_ex.model.User;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,29 +21,28 @@ public class CartServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("userId");
+        User user = (User) session.getAttribute("user");
 
-        // For demo purposes, use a fixed user ID if not logged in
-        if (userId == null) {
-            System.out.println("User ID not found in session, using demo user ID.");
-            userId = "demo-user-id";
-            session.setAttribute("userId", userId);
+        // Check if user is logged in
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/auth/login?redirect=" + req.getRequestURL());
+            return;
         }
 
         try {
-            List<CartItem> cartItems = cartDAO.getByUserId(userId);
+            List<CartItem> cartItems = cartDAO.getCartItems(user.getUser_id());
             req.setAttribute("cartItems", cartItems);
 
             // Calculate cart total
-            double total = cartItems.stream()
-                    .mapToDouble(item -> item.getTotal().doubleValue())
-                    .sum();
-            req.setAttribute("cartTotal", total);
+            BigDecimal total = cartItems.stream()
+                    .map(CartItem::getTotal)
+                    .reduce(BigDecimal.ZERO, BigDecimal::add);
+            req.setAttribute("total", total);
 
             req.getRequestDispatcher("/cart/cart.jsp").forward(req, resp);
         } catch (SQLException e) {
-            throw new ServletException(e);
+            req.setAttribute("error", "Có lỗi xảy ra khi tải giỏ hàng. Vui lòng thử lại.");
+            req.getRequestDispatcher("/cart/cart.jsp").forward(req, resp);
         }
     }
-
 }

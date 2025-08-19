@@ -11,50 +11,53 @@ public class CategoryDAO {
     private String jdbcUsername = "root";
     private String jdbcPassword = "";
 
-    static {
+    private Connection getConnection() throws SQLException {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
-            throw new RuntimeException("MySQL JDBC Driver not found", e);
+            throw new SQLException("MySQL JDBC Driver not found", e);
         }
-    }
-
-    private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
     }
 
     public List<Category> getAll() throws SQLException {
-        String sql = "SELECT * FROM categories WHERE deleted_at IS NULL";
+        System.out.println("=== CategoryDAO.getAll() START ===");
+        String sql = "SELECT * FROM categories WHERE deleted_at IS NULL ORDER BY name";
+        System.out.println("SQL Query: " + sql);
+
         List<Category> list = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
+
+            System.out.println("Database connection successful for categories");
+            int count = 0;
             while (rs.next()) {
-                Category c = new Category();
-                c.setId(rs.getInt("category_id"));
-                c.setName(rs.getString("name"));
-                c.setCreatedAt(rs.getTimestamp("created_at"));
-                c.setUpdatedAt(rs.getTimestamp("updated_at"));
-                list.add(c);
+                count++;
+                Category category = mapResultSetToCategory(rs);
+                list.add(category);
+                if (count <= 3) {
+                    System.out.println("Category " + count + ": " + category.getName() + " (ID: " + category.getCategoryId() + ")");
+                }
             }
+            System.out.println("Total categories found: " + count);
+        } catch (SQLException e) {
+            System.err.println("SQLException in CategoryDAO.getAll(): " + e.getMessage());
+            e.printStackTrace();
+            throw e;
         }
+        System.out.println("=== CategoryDAO.getAll() END - Returning " + list.size() + " categories ===");
         return list;
     }
 
     public Category getById(int id) throws SQLException {
-        String sql = "SELECT * FROM categories WHERE category_id = ?";
+        String sql = "SELECT * FROM categories WHERE category_id = ? AND deleted_at IS NULL";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                Category c = new Category();
-                c.setId(rs.getInt("category_id"));
-                c.setName(rs.getString("name"));
-                c.setCreatedAt(rs.getTimestamp("created_at"));
-                c.setUpdatedAt(rs.getTimestamp("updated_at"));
-                c.setDeletedAt(rs.getTimestamp("deleted_at"));
-                return c;
+                return mapResultSetToCategory(rs);
             }
         }
         return null;
@@ -74,7 +77,7 @@ public class CategoryDAO {
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, category.getName());
-            stmt.setInt(2, category.getId());
+            stmt.setInt(2, category.getCategoryId());
             stmt.executeUpdate();
         }
     }
@@ -86,5 +89,27 @@ public class CategoryDAO {
             stmt.setInt(1, id);
             stmt.executeUpdate();
         }
+    }
+
+    public long count() throws SQLException {
+        String sql = "SELECT COUNT(*) FROM categories WHERE deleted_at IS NULL";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                return rs.getLong(1);
+            }
+        }
+        return 0;
+    }
+
+    private Category mapResultSetToCategory(ResultSet rs) throws SQLException {
+        Category category = new Category();
+        category.setCategoryId(rs.getInt("category_id"));
+        category.setName(rs.getString("name"));
+        category.setCreatedAt(rs.getTimestamp("created_at"));
+        category.setUpdatedAt(rs.getTimestamp("updated_at"));
+        category.setDeletedAt(rs.getTimestamp("deleted_at"));
+        return category;
     }
 }

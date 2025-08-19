@@ -31,7 +31,7 @@ public class CategoryEditServlet extends HttpServlet {
         String name = req.getParameter("name");
 
         Category c = new Category();
-        c.setId(id);
+        c.setCategoryId(id);
         c.setName(name);
 
         try {

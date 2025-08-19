@@ -65,21 +65,31 @@ public class CheckoutServlet extends HttpServlet {
                 return;
             }
 
+            // Get form data
+            String customerName = req.getParameter("customerName");
+            String phoneNumber = req.getParameter("phoneNumber");
+            String shippingAddress = req.getParameter("shippingAddress");
+            String note = req.getParameter("note");
+            String paymentMethod = req.getParameter("paymentMethod");
+
             // Create order
             Order order = new Order();
             order.setUserId(user.getUser_id());
             order.setTotalPrice(calculateTotal(cartItems));
             order.setStatus("pending");
+            order.setCustomerName(customerName != null ? customerName : user.getFullName());
+            order.setPhoneNumber(phoneNumber != null ? phoneNumber : user.getPhoneNumber());
+            order.setShippingAddress(shippingAddress);
+            order.setNote(note);
+            order.setPaymentMethod(paymentMethod);
+            order.setEmail(user.getEmail());
 
             // Process payment
-            String paymentMethod = req.getParameter("paymentMethod");
-            // Simulate payment processing
             boolean paymentSuccess = processPayment(paymentMethod, order.getTotalPrice());
 
             if (paymentSuccess) {
-                // Save order
-                List<OrderItem> orderItems = convertCartItemsToOrderItems(cartItems);
-                int orderId = orderDAO.createOrder(order, orderItems);
+                // Save order using insertOrder method which handles CartItem directly
+                int orderId = orderDAO.insertOrder(order, cartItems);
 
                 // Clear cart after successful order
                 cartDAO.clearCart(user.getUser_id());
@@ -104,10 +114,10 @@ public class CheckoutServlet extends HttpServlet {
     }
 
     private boolean processPayment(String method, BigDecimal amount) {
-
+        // Simulate payment processing - always return true for demo
         return true;
     }
-    // Add this conversion method in CheckoutServlet
+
     private List<OrderItem> convertCartItemsToOrderItems(List<CartItem> cartItems) {
         List<OrderItem> orderItems = new ArrayList<>();
 
@@ -116,7 +126,6 @@ public class CheckoutServlet extends HttpServlet {
             orderItem.setProductId(cartItem.getProductId());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setPrice(cartItem.getPrice());
-            // Set other necessary fields from cartItem to orderItem
             orderItems.add(orderItem);
         }
 
