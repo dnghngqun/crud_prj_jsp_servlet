@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.example.crud_prj_ex.dao.OrderDAO;
 import org.example.crud_prj_ex.model.Order;
+import org.example.crud_prj_ex.model.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,15 +21,16 @@ public class OrderServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String userId = (String) session.getAttribute("userId");
+        User user = (User) session.getAttribute("user");
 
-        if (userId == null) {
-            userId = "demo-user-id";
-            session.setAttribute("userId", userId);
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/login");
+            return;
         }
 
         try {
-            List<Order> orders = orderDAO.getByUserId(userId);
+            // Use getOrdersByUserId to fetch orders with order items
+            List<Order> orders = orderDAO.getOrdersByUserId(user.getUserId());
             req.setAttribute("orders", orders);
             req.getRequestDispatcher("/order/list.jsp").forward(req, resp);
         } catch (SQLException e) {

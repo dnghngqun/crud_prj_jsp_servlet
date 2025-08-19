@@ -29,7 +29,8 @@ public class OrderConfirmationServlet extends HttpServlet {
         User user = (User) session.getAttribute("user");
 
         try {
-            Order order = orderDAO.getById(Integer.parseInt(orderId));
+            // Use getOrderById instead of getById to fetch order with order items
+            Order order = orderDAO.getOrderById(Integer.parseInt(orderId));
             if (order != null && user != null) {
                 // Set the email if it's not already set
                 if (order.getEmail() == null || order.getEmail().isEmpty()) {
@@ -37,7 +38,7 @@ public class OrderConfirmationServlet extends HttpServlet {
                 }
                 // Set payment method if not set
                 if (order.getPaymentMethod() == null || order.getPaymentMethod().isEmpty()) {
-                    order.setPaymentMethod("Thanh toán khi nhận hàng");
+                    order.setPaymentMethod("on_delivery");
                 }
             }
             req.setAttribute("order", order);

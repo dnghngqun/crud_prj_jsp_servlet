@@ -92,61 +92,16 @@
             font-weight: 500;
             padding: 0.5rem 1rem;
             border-radius: var(--radius);
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 0.5rem;
         }
 
-        .nav-link:hover,
-        .nav-link.active {
+        .nav-link:hover {
             background: var(--primary);
             color: white;
-            transform: translateY(-2px);
-        }
-
-        .user-menu {
-            position: relative;
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            right: 0;
-            background: var(--glass-bg);
-            backdrop-filter: blur(15px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            padding: 0.5rem;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: block;
-            padding: 0.75rem 1rem;
-            color: var(--text-primary);
-            text-decoration: none;
-            border-radius: var(--radius);
-            transition: background 0.2s ease;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
         }
 
         .main-content {
@@ -168,6 +123,7 @@
             padding: 2rem;
             border-radius: var(--radius-xl);
             border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-md);
         }
 
         .cart-title {
@@ -197,6 +153,7 @@
             border-radius: var(--radius-xl);
             border: 1px solid var(--glass-border);
             overflow: hidden;
+            box-shadow: var(--shadow-md);
         }
 
         .cart-item {
@@ -206,12 +163,13 @@
             padding: 2rem;
             border-bottom: 1px solid var(--glass-border);
             align-items: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
+            will-change: transform, background-color;
         }
 
         .cart-item:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateX(5px);
+            background: rgba(102, 126, 234, 0.08);
+            transform: translateX(2px);
         }
 
         .cart-item:last-child {
@@ -223,7 +181,7 @@
             height: 120px;
             border-radius: var(--radius-lg);
             overflow: hidden;
-            box-shadow: var(--shadow-md);
+            box-shadow: var(--shadow-sm);
             position: relative;
         }
 
@@ -231,11 +189,11 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.2s ease;
         }
 
         .cart-item:hover .item-image img {
-            transform: scale(1.05);
+            transform: scale(1.02);
         }
 
         .item-details {
@@ -362,13 +320,13 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             margin-top: 0.5rem;
         }
 
         .remove-btn:hover {
             background: #e53e3e;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .cart-summary {
@@ -380,6 +338,7 @@
             height: fit-content;
             position: sticky;
             top: 120px;
+            box-shadow: var(--shadow-md);
         }
 
         .summary-title {
@@ -405,6 +364,8 @@
             margin-top: 1rem;
             padding-top: 1rem;
             border-top: 2px solid var(--glass-border);
+            font-size: 1.1rem;
+            font-weight: 700;
         }
 
         .summary-label {
@@ -428,7 +389,7 @@
             font-weight: 600;
             cursor: pointer;
             margin-top: 1.5rem;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             text-decoration: none;
             display: flex;
             align-items: center;
@@ -448,6 +409,7 @@
             border: 1px solid var(--glass-border);
             padding: 4rem 2rem;
             text-align: center;
+            box-shadow: var(--shadow-md);
         }
 
         .empty-cart-icon {
@@ -478,7 +440,7 @@
             border-radius: var(--radius-lg);
             text-decoration: none;
             font-weight: 600;
-            transition: all 0.3s ease;
+            transition: all 0.2s ease;
             border: none;
             cursor: pointer;
         }
@@ -493,110 +455,34 @@
             box-shadow: var(--shadow-md);
         }
 
-        /* Coupon section styles */
-        .coupon-section {
-            margin: 1.5rem 0;
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .coupon-input {
-            flex: 1;
-            padding: 0.75rem;
+        .continue-shopping {
             background: var(--glass-bg);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
-            border-radius: var(--radius);
-            color: var(--text-primary);
-            font-size: 0.9rem;
+            border-radius: var(--radius-xl);
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
         }
 
-        .coupon-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .coupon-btn {
-            padding: 0.75rem 1rem;
-            background: var(--accent);
-            color: white;
-            border: none;
-            border-radius: var(--radius);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .coupon-btn:hover {
-            background: #45b7aa;
-            transform: translateY(-1px);
-        }
-
-        /* Checkout actions */
-        .checkout-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .btn-checkout {
-            width: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            padding: 1rem 2rem;
-            border-radius: var(--radius-lg);
-            font-size: 1.1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-        }
-
-        .btn-checkout:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .btn-continue {
-            width: 100%;
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--glass-border);
-            padding: 0.75rem 1.5rem;
-            border-radius: var(--radius-lg);
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
+        .continue-shopping a {
+            color: var(--primary);
             text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
         }
 
-        .btn-continue:hover {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            transform: translateY(-1px);
+        .continue-shopping a:hover {
+            color: var(--secondary);
+            transform: translateX(-2px);
         }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .navbar-container {
-                padding: 0 1rem;
-            }
-
-            .navbar-nav {
-                gap: 1rem;
-            }
-
-            .main-content {
-                padding: 1rem;
-                margin-top: 80px;
-            }
-
             .cart-content {
                 grid-template-columns: 1fr;
                 gap: 1rem;
@@ -608,11 +494,6 @@
                 padding: 1.5rem;
             }
 
-            .item-image {
-                width: 80px;
-                height: 80px;
-            }
-
             .item-actions {
                 grid-column: 1 / -1;
                 flex-direction: row;
@@ -620,160 +501,112 @@
                 margin-top: 1rem;
             }
 
+            .item-image {
+                width: 80px;
+                height: 80px;
+            }
+
             .cart-title {
                 font-size: 2rem;
             }
-        }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1001;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.error {
-            background: var(--danger);
+            .navbar-nav {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- Fixed Navbar -->
-    <nav class="navbar" id="navbar">
+    <!-- Navbar -->
+    <nav class="navbar">
         <div class="navbar-container">
             <a href="${pageContext.request.contextPath}/" class="navbar-brand">
                 <i class="fas fa-store"></i>
                 GoMsu Store
             </a>
-
-            <ul class="navbar-nav" id="navbarNav">
-                <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/" class="nav-link">
-                        <i class="fas fa-home"></i> Trang Chủ
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/shop" class="nav-link">
-                        <i class="fas fa-shopping-bag"></i> Cửa Hàng
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="${pageContext.request.contextPath}/cart" class="nav-link active">
-                        <i class="fas fa-shopping-cart"></i> Giỏ Hàng
-                    </a>
-                </li>
+            <ul class="navbar-nav">
+                <li><a href="${pageContext.request.contextPath}/" class="nav-link">
+                    <i class="fas fa-home"></i> Trang Chủ
+                </a></li>
+                <li><a href="${pageContext.request.contextPath}/shop" class="nav-link">
+                    <i class="fas fa-shopping-bag"></i> Cửa Hàng
+                </a></li>
+                <li><a href="${pageContext.request.contextPath}/cart" class="nav-link active">
+                    <i class="fas fa-shopping-cart"></i> Giỏ Hàng
+                </a></li>
+                <c:if test="${not empty sessionScope.user}">
+                    <li><a href="${pageContext.request.contextPath}/orders" class="nav-link">
+                        <i class="fas fa-list"></i> Đơn hàng
+                    </a></li>
+                    <li><a href="${pageContext.request.contextPath}/logout" class="nav-link">
+                        <i class="fas fa-sign-out-alt"></i> Đăng xuất
+                    </a></li>
+                </c:if>
+                <c:if test="${empty sessionScope.user}">
+                    <li><a href="${pageContext.request.contextPath}/login" class="nav-link">
+                        <i class="fas fa-sign-in-alt"></i> Đăng nhập
+                    </a></li>
+                </c:if>
             </ul>
-
-            <div class="user-menu">
-                <c:choose>
-                    <c:when test="${sessionScope.user != null}">
-                        <div class="dropdown">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-user"></i> ${sessionScope.user.username}
-                            </a>
-                            <div class="dropdown-menu">
-                                <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">Hồ Sơ</a>
-                                <a href="${pageContext.request.contextPath}/orders" class="dropdown-item">Đơn Hàng</a>
-                                <a href="${pageContext.request.contextPath}/logout" class="dropdown-item">Đăng Xuất</a>
-                            </div>
-                        </div>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/login" class="btn btn-primary">
-                            <i class="fas fa-sign-in-alt"></i> Đăng Nhập
-                        </a>
-                    </c:otherwise>
-                </c:choose>
-            </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <div class="main-content">
+    <main class="main-content">
         <div class="container">
+            <!-- Cart Header -->
             <div class="cart-header">
                 <h1 class="cart-title">
                     <i class="fas fa-shopping-cart"></i>
-                    Giỏ Hàng Của Bạn
+                    Giỏ Hàng
                 </h1>
-                <p class="cart-subtitle">
-                    <c:choose>
-                        <c:when test="${fn:length(cartItems) > 0}">
-                            Bạn có ${fn:length(cartItems)} sản phẩm trong giỏ hàng
-                        </c:when>
-                        <c:otherwise>
-                            Giỏ hàng của bạn đang trống
-                        </c:otherwise>
-                    </c:choose>
-                </p>
+                <p class="cart-subtitle">Quản lý sản phẩm trong giỏ hàng của bạn</p>
             </div>
 
             <c:choose>
-                <c:when test="${fn:length(cartItems) > 0}">
+                <c:when test="${not empty cartItems}">
                     <div class="cart-content">
+                        <!-- Cart Items -->
                         <div class="cart-items">
                             <c:forEach var="item" items="${cartItems}">
-                                <div class="cart-item" data-id="${item.id}">
+                                <div class="cart-item" data-product-id="${item.productId}">
                                     <div class="item-image">
-                                        <img src="${not empty item.product.imageUrl ? item.product.imageUrl : '/images/no-image.jpg'}"
-                                             alt="${item.product.name}" loading="lazy">
+                                        <img src="${pageContext.request.contextPath}${item.product.imageUrl}"
+                                             alt="${item.product.name}"
+                                             onerror="this.src='${pageContext.request.contextPath}/images/no-image.png'">
                                     </div>
 
                                     <div class="item-details">
                                         <h3 class="item-name">${item.product.name}</h3>
-                                        <p class="item-category">${item.product.categoryName}</p>
+                                        <div class="item-category">
+                                            <i class="fas fa-tag"></i> ${item.product.categoryName}
+                                        </div>
                                         <div class="item-price">
-                                            <c:choose>
-                                                <c:when test="${item.product.discount != null && item.product.discount > 0}">
-                                                    <span class="current-price">
-                                                        <fmt:formatNumber value="${item.product.price * (1 - item.product.discount/100)}" type="currency" currencyCode="VND"/>
-                                                    </span>
-                                                    <span class="original-price">
-                                                        <fmt:formatNumber value="${item.product.price}" type="currency" currencyCode="VND"/>
-                                                    </span>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <span class="current-price">
-                                                        <fmt:formatNumber value="${item.product.price}" type="currency" currencyCode="VND"/>
-                                                    </span>
-                                                </c:otherwise>
-                                            </c:choose>
+                                            <span class="current-price">
+                                                <fmt:formatNumber value="${item.product.price}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                            </span>
                                         </div>
                                     </div>
 
                                     <div class="item-actions">
                                         <div class="quantity-controls">
-                                            <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity - 1})"
-                                                    ${item.quantity <= 1 ? 'disabled' : ''} type="button">
+                                            <button class="qty-btn" onclick="updateQuantity(${item.productId}, ${item.quantity - 1})"
+                                                    ${item.quantity <= 1 ? 'disabled' : ''}>
                                                 <i class="fas fa-minus"></i>
                                             </button>
                                             <input type="number" class="qty-input" value="${item.quantity}"
-                                                   min="1" max="99" onchange="updateQuantity(${item.id}, this.value)">
-                                            <button class="qty-btn" onclick="updateQuantity(${item.id}, ${item.quantity + 1})" type="button">
+                                                   min="1" readonly>
+                                            <button class="qty-btn" onclick="updateQuantity(${item.productId}, ${item.quantity + 1})">
                                                 <i class="fas fa-plus"></i>
                                             </button>
                                         </div>
 
                                         <div class="item-total">
-                                            <c:set var="itemPrice" value="${item.product.discount != null && item.product.discount > 0 ?
-                                                item.product.price * (1 - item.product.discount/100) : item.product.price}" />
-                                            <fmt:formatNumber value="${itemPrice * item.quantity}" type="currency" currencyCode="VND"/>
+                                            <div class="total-value">
+                                                <fmt:formatNumber value="${item.product.price * item.quantity}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                            </div>
                                         </div>
 
-                                        <button class="remove-btn" onclick="removeItem(${item.id})"
-                                                title="Xóa sản phẩm" type="button">
+                                        <button class="remove-btn" onclick="removeFromCart(${item.productId})" title="Xóa khỏi giỏ hàng">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </div>
@@ -781,52 +614,36 @@
                             </c:forEach>
                         </div>
 
+                        <!-- Cart Summary -->
                         <div class="cart-summary">
-                            <div class="summary-card">
-                                <h3 class="summary-title">Tóm Tắt Đơn Hàng</h3>
+                            <h3 class="summary-title">
+                                <i class="fas fa-calculator"></i>
+                                Tổng Đơn Hàng
+                            </h3>
 
-                                <div class="summary-row">
-                                    <span>Tạm tính (${fn:length(cartItems)} sản phẩm):</span>
-                                    <span id="subtotal">
-                                        <fmt:formatNumber value="${cartTotal}" type="currency" currencyCode="VND"/>
-                                    </span>
-                                </div>
-
-                                <div class="summary-row">
-                                    <span>Phí vận chuyển:</span>
-                                    <span class="shipping-fee">Miễn phí</span>
-                                </div>
-
-                                <div class="summary-row discount-row" style="display: none;">
-                                    <span>Giảm giá:</span>
-                                    <span class="discount-amount">-0₫</span>
-                                </div>
-
-                                <hr>
-
-                                <div class="summary-row total-row">
-                                    <span>Tổng cộng:</span>
-                                    <span class="total-amount" id="totalAmount">
-                                        <fmt:formatNumber value="${cartTotal}" type="currency" currencyCode="VND"/>
-                                    </span>
-                                </div>
-
-                                <div class="coupon-section">
-                                    <input type="text" class="coupon-input" placeholder="Nhập mã giảm giá" id="couponInput">
-                                    <button class="coupon-btn" onclick="applyCoupon()">Áp dụng</button>
-                                </div>
-
-                                <div class="checkout-actions">
-                                    <button class="btn-checkout" onclick="proceedToCheckout()">
-                                        <i class="fas fa-credit-card"></i>
-                                        Tiến Hành Thanh Toán
-                                    </button>
-                                    <a href="${pageContext.request.contextPath}/shop" class="btn-continue">
-                                        <i class="fas fa-arrow-left"></i>
-                                        Tiếp Tục Mua Sắm
-                                    </a>
-                                </div>
+                            <div class="summary-row">
+                                <span class="summary-label">Tạm tính:</span>
+                                <span class="summary-value">
+                                    <fmt:formatNumber value="${totalAmount}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                </span>
                             </div>
+
+                            <div class="summary-row">
+                                <span class="summary-label">Phí vận chuyển:</span>
+                                <span class="summary-value">Miễn phí</span>
+                            </div>
+
+                            <div class="summary-row">
+                                <span class="summary-label">Tổng cộng:</span>
+                                <span class="summary-value" style="color: var(--primary); font-size: 1.2rem;">
+                                    <fmt:formatNumber value="${totalAmount}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                </span>
+                            </div>
+
+                            <a href="${pageContext.request.contextPath}/checkout" class="checkout-btn">
+                                <i class="fas fa-credit-card"></i>
+                                Thanh Toán Ngay
+                            </a>
                         </div>
                     </div>
                 </c:when>
@@ -835,38 +652,32 @@
                         <div class="empty-cart-icon">
                             <i class="fas fa-shopping-cart"></i>
                         </div>
-                        <h2 class="empty-cart-title">Giỏ hàng của bạn đang trống</h2>
-                        <p class="empty-cart-message">Hãy khám phá các sản phẩm tuyệt vời của chúng tôi!</p>
+                        <h2 class="empty-cart-title">Giỏ hàng trống</h2>
+                        <p class="empty-cart-message">
+                            Bạn chưa có sản phẩm nào trong giỏ hàng. Hãy khám phá cửa hàng và thêm sản phẩm yêu thích!
+                        </p>
                         <a href="${pageContext.request.contextPath}/shop" class="btn btn-primary">
                             <i class="fas fa-shopping-bag"></i>
-                            Bắt Đầu Mua Sắm
+                            Mua Sắm Ngay
                         </a>
                     </div>
                 </c:otherwise>
             </c:choose>
+
+            <!-- Continue Shopping -->
+            <div class="continue-shopping">
+                <a href="${pageContext.request.contextPath}/shop">
+                    <i class="fas fa-arrow-left"></i>
+                    Tiếp tục mua sắm
+                </a>
+            </div>
         </div>
-    </div>
+    </main>
 
     <script>
-        // Fixed navbar on scroll
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        // Update quantity function
-        function updateQuantity(itemId, newQuantity) {
+        function updateQuantity(productId, newQuantity) {
             if (newQuantity < 1) {
-                removeItem(itemId);
-                return;
-            }
-
-            if (newQuantity > 99) {
-                showNotification('Số lượng không được vượt quá 99', 'error');
+                removeFromCart(productId);
                 return;
             }
 
@@ -875,139 +686,45 @@
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded',
                 },
-                body: 'itemId=' + itemId + '&quantity=' + newQuantity
+                body: 'productId=' + productId + '&quantity=' + newQuantity
             })
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
                     location.reload();
                 } else {
-                    showNotification(data.message || 'Có lỗi xảy ra!', 'error');
+                    alert('Có lỗi xảy ra khi cập nhật giỏ hàng');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                showNotification('Có lỗi xảy ra khi cập nhật!', 'error');
+                alert('Có lỗi xảy ra khi cập nhật giỏ hàng');
             });
         }
 
-        // Remove item function
-        function removeItem(itemId) {
-            if (!confirm('Bạn có chắc muốn xóa sản phẩm này khỏi giỏ hàng?')) {
-                return;
-            }
-
-            fetch('${pageContext.request.contextPath}/cart/remove', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'itemId=' + itemId
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    location.reload();
-                } else {
-                    showNotification(data.message || 'Có lỗi xảy ra!', 'error');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showNotification('Có lỗi xảy ra khi xóa sản phẩm!', 'error');
-            });
-        }
-
-        // Apply coupon function
-        function applyCoupon() {
-            const couponCode = document.getElementById('couponInput').value.trim();
-            if (!couponCode) {
-                showNotification('Vui lòng nhập mã giảm giá!', 'error');
-                return;
-            }
-
-            // Simulate coupon application
-            showNotification('Tính năng mã giảm giá đang được phát triển!', 'info');
-        }
-
-        // Proceed to checkout function
-        function proceedToCheckout() {
-            <c:choose>
-                <c:when test="${sessionScope.user != null}">
-                    window.location.href = '${pageContext.request.contextPath}/checkout';
-                </c:when>
-                <c:otherwise>
-                    if (confirm('Bạn cần đăng nhập để thanh toán. Chuyển đến trang đăng nhập?')) {
-                        window.location.href = '${pageContext.request.contextPath}/login?redirect=checkout';
+        function removeFromCart(productId) {
+            if (confirm('Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?')) {
+                fetch('${pageContext.request.contextPath}/cart/remove', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'productId=' + productId
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Có lỗi xảy ra khi xóa sản phẩm');
                     }
-                </c:otherwise>
-            </c:choose>
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xóa sản phẩm');
+                });
+            }
         }
-
-        // Notification function
-        function showNotification(message, type) {
-            const notification = document.createElement('div');
-            notification.className = 'notification notification-' + type;
-            notification.innerHTML = '<i class="fas fa-info-circle"></i>' + message;
-
-            document.body.appendChild(notification);
-
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-
-        // Add ripple effect to buttons
-        document.querySelectorAll('.btn-checkout, .btn-continue').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                const ripple = document.createElement('span');
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
-
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
-                ripple.classList.add('ripple');
-
-                this.appendChild(ripple);
-
-                setTimeout(() => {
-                    ripple.remove();
-                }, 400);
-            });
-        });
     </script>
-
-    <style>
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: var(--success);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1001;
-        }
-
-        .notification.show {
-            transform: translateX(0);
-        }
-
-        .notification.error {
-            background: var(--danger);
-        }
-    </style>
 </body>
 </html>
-

@@ -204,6 +204,128 @@
             font-weight: 600;
         }
 
+        /* Product List Styles */
+        .products-section {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 2rem;
+        }
+
+        .products-section h4 {
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--glass-border);
+            padding-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .product-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .product-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .product-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .product-image {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius);
+            object-fit: cover;
+            margin-right: 1rem;
+            border: 2px solid var(--glass-border);
+        }
+
+        .product-info {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 1.1rem;
+        }
+
+        .product-category {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .product-quantity, .product-price, .product-total {
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .product-quantity {
+            color: var(--accent);
+            background: rgba(78, 205, 196, 0.2);
+            padding: 0.5rem;
+            border-radius: var(--radius);
+            font-size: 0.9rem;
+        }
+
+        .product-price {
+            color: var(--text-secondary);
+        }
+
+        .product-total {
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+
+        .products-header {
+            display: grid;
+            grid-template-columns: 80px 2fr 1fr 1fr 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            margin-bottom: 1rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .products-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: var(--radius-lg);
+            margin-top: 1.5rem;
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
         .action-buttons {
             display: flex;
             gap: 1rem;
@@ -290,6 +412,25 @@
             .detail-grid {
                 grid-template-columns: 1fr;
                 gap: 1rem;
+            }
+
+            .product-info {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+
+            .products-header {
+                display: none;
+            }
+
+            .product-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .product-image {
+                margin-right: 0;
+                margin-bottom: 1rem;
             }
 
             .action-buttons {
@@ -436,6 +577,69 @@
                     </div>
                 </c:if>
             </div>
+        </div>
+
+        <!-- Products Section -->
+        <div class="products-section">
+            <h4><i class="fas fa-shopping-bag"></i> Sản phẩm đã mua</h4>
+
+            <!-- Products Header -->
+            <div class="products-header">
+                <div>Hình ảnh</div>
+                <div>Sản phẩm</div>
+                <div>Số lượng</div>
+                <div>Đơn giá</div>
+                <div>Thành tiền</div>
+            </div>
+
+            <!-- Product List -->
+            <c:choose>
+                <c:when test="${not empty order.orderItems}">
+                    <c:forEach var="item" items="${order.orderItems}">
+                        <div class="product-item">
+                            <img src="${item.product.imageUrl}"
+                                 alt="${item.product.name}"
+                                 class="product-image"
+                                 onerror="this.src='${pageContext.request.contextPath}/images/no-image.png'">
+
+                            <div class="product-info">
+                                <div>
+                                    <div class="product-name">${item.product.name}</div>
+                                    <c:if test="${not empty item.product.categoryName}">
+                                        <div class="product-category">
+                                            <i class="fas fa-tag"></i> ${item.product.categoryName}
+                                        </div>
+                                    </c:if>
+                                </div>
+
+                                <div class="product-quantity">
+                                    <i class="fas fa-times"></i> ${item.quantity}
+                                </div>
+
+                                <div class="product-price">
+                                    <fmt:formatNumber value="${item.price}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                </div>
+
+                                <div class="product-total">
+                                    <fmt:formatNumber value="${item.price * item.quantity}" type="currency" currencySymbol="₫" groupingUsed="true"/>
+                                </div>
+                            </div>
+                        </div>
+                    </c:forEach>
+
+                    <!-- Products Total -->
+                    <div class="products-total">
+                        <span><i class="fas fa-calculator"></i> Tổng cộng</span>
+                        <span><fmt:formatNumber value="${order.totalPrice}" type="currency" currencySymbol="₫" groupingUsed="true"/></span>
+                    </div>
+                </c:when>
+                <c:otherwise>
+                    <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+                        <i class="fas fa-inbox" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <p>Không có sản phẩm nào trong đơn hàng này.</p>
+                    </div>
+                </c:otherwise>
+            </c:choose>
         </div>
 
         <!-- Action Buttons -->
